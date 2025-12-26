@@ -1,4 +1,4 @@
-from camera_booking import bookingDecision
+from camera import bookingDecision
 
 def test_booking_approved():
     assert bookingDecision(2, 2, 2, 10) == "APPROVED"
