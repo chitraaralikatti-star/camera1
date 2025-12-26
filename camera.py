@@ -1,4 +1,6 @@
 import sys
+from ast import literal_eval
+
 
 def bookingDecision(requestHours, priority, existingHours, capacity):
     if capacity <= 0:
@@ -22,27 +24,39 @@ def get_camera_booking_details(args):
     priority = 1
     existingHours = 3
     capacity = 10
+    source = "DEFAULT"
 
-    # PARAMETERS FROM Jenkins / CLI
+    # PARAMETERS FROM Jenkins / CLI (ELSE CASE)
     if len(args) == 6:
         cameraId = args[1]
-        requestHours = int(args[2])
-        priority = int(args[3])
-        existingHours = int(args[4])
-        capacity = int(args[5])
+        requestHours = literal_eval(args[2])
+        priority = literal_eval(args[3])
+        existingHours = literal_eval(args[4])
+        capacity = literal_eval(args[5])
+        source = "PARAMETERS"
 
     result = bookingDecision(requestHours, priority, existingHours, capacity)
 
     return {
         "CameraID": cameraId,
-        "Status": result
+        "RequestHours": requestHours,
+        "Priority": priority,
+        "ExistingHours": existingHours,
+        "Capacity": capacity,
+        "Status": result,
+        "Source": source
     }
 
 
 def display_result(data):
     return [
+        f"Input Source   : {data['Source']}",
         f"Camera ID      : {data['CameraID']}",
-        f"Booking Status : {data['Status']}"
+        f"Request Hours : {data['RequestHours']}",
+        f"Priority      : {data['Priority']}",
+        f"Existing Hours: {data['ExistingHours']}",
+        f"Capacity      : {data['Capacity']}",
+        f"Booking Status: {data['Status']}"
     ]
 
 
